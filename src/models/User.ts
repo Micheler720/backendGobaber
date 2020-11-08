@@ -24,6 +24,9 @@ class User {
 
     @CreateDateColumn()
     updated_at: Date;
+
+    @Column()
+    avatar: string;
 }
 
 export default User;
