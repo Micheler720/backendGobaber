@@ -1,0 +1,25 @@
+import path from 'path';
+import uploadConfig from '@config/upload';
+import fs from 'fs';
+import IStorageProvider from '../models/IStorageProvider';
+
+class DiskStorageProvider implements IStorageProvider {
+    async saveFile(file: string): Promise<string> {
+        await fs.promises.rename(
+            path.resolve(uploadConfig.tmpFolder, file),
+            path.resolve(uploadConfig.uploadsFolder, 'uploads ', file),
+        );
+        return file;
+    }
+
+    async deleteFile(file: string): Promise<void> {
+        const filePath = path.resolve(uploadConfig.tmpFolder, file);
+        try {
+            await fs.promises.stat(filePath);
+        } catch {
+            return;
+        }
+        await fs.promises.unlink(filePath);
+    }
+}
+export default DiskStorageProvider;
