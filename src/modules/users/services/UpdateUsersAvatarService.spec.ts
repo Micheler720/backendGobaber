@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/Fakes/FakeCacheProvider';
 import UpdateAvatarService from './UpdateUsersAvatarService';
 import FakeUsersRepository from '../repositories/fakes/FakeUserRepository';
 import CreateUserService from './CreateUserService';
@@ -11,16 +12,19 @@ let createUser: CreateUserService;
 let fakeStorageProvider: FakeStorageProvider;
 let updateAvatar: UpdateAvatarService;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('UpdateAvatar', () => {
     beforeEach(() => {
         fakeUsersRepository = new FakeUsersRepository();
         fakeStorageProvider = new FakeStorageProvider();
         fakeHashProvider = new FakeHashProvider();
+        fakeCacheProvider = new FakeCacheProvider();
 
         createUser = new CreateUserService(
             fakeUsersRepository,
             fakeHashProvider,
+            fakeCacheProvider,
         );
 
         updateAvatar = new UpdateAvatarService(
@@ -28,6 +32,7 @@ describe('UpdateAvatar', () => {
             fakeStorageProvider,
         );
     });
+
     it('should not be able to update avatar from non existing user', async () => {
         await expect(
             updateAvatar.execute({
@@ -36,6 +41,7 @@ describe('UpdateAvatar', () => {
             }),
         ).rejects.toBeInstanceOf(AppError);
     });
+
     it('should not be able to avatar update.', async () => {
         const user = await createUser.execute({
             email: 'fulano@fulano.com.br',
@@ -49,6 +55,7 @@ describe('UpdateAvatar', () => {
         });
         expect(user.avatar).toBe('teste.jpg');
     });
+
     it('should delete old avatar when updating new one', async () => {
         const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 

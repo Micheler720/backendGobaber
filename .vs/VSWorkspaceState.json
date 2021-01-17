@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\modules",
+    "\\src\\modules\\users",
+    "\\src\\modules\\users\\infra",
+    "\\src\\modules\\users\\infra\\typeorm"
+  ],
+  "PreviewInSolutionExplorer": false
+}

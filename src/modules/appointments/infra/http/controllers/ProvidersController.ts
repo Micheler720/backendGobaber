@@ -1,7 +1,7 @@
 import ListProvidersService from '@modules/appointments/services/ListProvidersService';
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
-import ProvidersMap from '@modules/appointments/mappers/ProviderMap';
+import { classToClass } from 'class-transformer';
 
 class ProvidersController {
     public async index(
@@ -13,8 +13,7 @@ class ProvidersController {
         const providers = await listProviders.execute({
             user_id,
         });
-        const providersMapped = ProvidersMap.toDTO(providers);
-        return response.json(providersMapped).status(200);
+        return response.json(classToClass(providers)).status(200);
     }
 }
 export default ProvidersController;

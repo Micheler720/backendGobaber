@@ -1,14 +1,25 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var tsyringe_1 = require("tsyringe");
+
+var _tsyringe = require("tsyringe");
+
 require("./providers");
-require("@modules/users/providers");
-var AppointmentsRepository_1 = __importDefault(require("@modules/appointments/infra/typeorm/repositories/AppointmentsRepository"));
-var UsersRepository_1 = __importDefault(require("@modules/users/infra/typeorm/repositories/UsersRepository"));
-var UserTokenRepository_1 = __importDefault(require("@modules/users/infra/typeorm/repositories/UserTokenRepository"));
-tsyringe_1.container.registerSingleton('AppointmentsRepository', AppointmentsRepository_1.default);
-tsyringe_1.container.registerSingleton('UsersRepository', UsersRepository_1.default);
-tsyringe_1.container.registerSingleton('UserTokenRepository', UserTokenRepository_1.default);
+
+require("../../modules/users/providers");
+
+var _AppointmentsRepository = _interopRequireDefault(require("../../modules/appointments/infra/typeorm/repositories/AppointmentsRepository"));
+
+var _UsersRepository = _interopRequireDefault(require("../../modules/users/infra/typeorm/repositories/UsersRepository"));
+
+var _UserTokenRepository = _interopRequireDefault(require("../../modules/users/infra/typeorm/repositories/UserTokenRepository"));
+
+var _NotificationsRepository = _interopRequireDefault(require("../../modules/notifications/infra/typeorm/repositories/NotificationsRepository"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_tsyringe.container.registerSingleton('AppointmentsRepository', _AppointmentsRepository.default);
+
+_tsyringe.container.registerSingleton('UsersRepository', _UsersRepository.default);
+
+_tsyringe.container.registerSingleton('UserTokenRepository', _UserTokenRepository.default);
+
+_tsyringe.container.registerSingleton('NotificationsRepository', _NotificationsRepository.default);

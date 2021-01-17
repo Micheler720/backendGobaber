@@ -12,10 +12,10 @@ interface IRequest {
 @injectable()
 class UpdateUsersAvatarService {
     constructor(
-        @inject('UsersInject')
+        @inject('UsersRepository')
         private usersRepository: IUserRepository,
 
-        @inject('DiskStorage')
+        @inject('StorageProvider')
         private storageProvider: IStorageProvider,
     ) {}
 

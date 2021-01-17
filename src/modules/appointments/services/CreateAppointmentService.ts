@@ -4,6 +4,7 @@ import Appointment from '@modules/appointments/infra/typeorm/entities/Appointmen
 import AppError from '@shared/errors/AppError';
 import IAppointmensRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 interface Request {
     date: Date;
@@ -19,6 +20,9 @@ class CreateAppointmentService {
 
         @inject('NotificationsRepository')
         private notificationsRepository: INotificationsRepository,
+
+        @inject('CacheProvider')
+        private cacheProvider: ICacheProvider,
     ) {}
 
     public async execute({
@@ -27,6 +31,11 @@ class CreateAppointmentService {
         user_id,
     }: Request): Promise<Appointment> {
         const appointmentDate = startOfHour(date);
+
+        const cacheKey = `providers-appointments:${provider_id}:${format(
+            appointmentDate,
+            'yyyy-M-d',
+        )}`;
 
         if (isBefore(appointmentDate, Date.now())) {
             throw new AppError(
@@ -44,6 +53,7 @@ class CreateAppointmentService {
         }
         const findApponitmentInSameDate = await this.appointsmentRepository.findByDate(
             appointmentDate,
+            provider_id,
         );
         if (findApponitmentInSameDate) {
             throw new AppError('This appointment is already booked');
@@ -63,6 +73,7 @@ class CreateAppointmentService {
             recipient_id: provider_id,
             content: `Ǹovo agendamento para dia ${dateFormated}`,
         });
+        await this.cacheProvider.invalidate(cacheKey);
         return appointment;
     }
 }

@@ -1,18 +1,37 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var multer_1 = __importDefault(require("multer"));
-var upload_1 = __importDefault(require("@config/upload"));
-var ensureAuthencated_1 = __importDefault(require("@modules/users/infra/http/middleware/ensureAuthencated"));
-var UsersController_1 = __importDefault(require("../controllers/UsersController"));
-var UserAvatarController_1 = __importDefault(require("../controllers/UserAvatarController"));
-var usersRouter = express_1.Router();
-var upload = multer_1.default(upload_1.default);
-var usersController = new UsersController_1.default();
-var userAvatarController = new UserAvatarController_1.default();
-usersRouter.post('/', usersController.create);
-usersRouter.patch('/avatar', ensureAuthencated_1.default, upload.single('avatar'), userAvatarController.update);
-exports.default = usersRouter;
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _express = require("express");
+
+var _celebrate = require("celebrate");
+
+var _multer = _interopRequireDefault(require("multer"));
+
+var _upload = _interopRequireDefault(require("../../../../../config/upload"));
+
+var _ensureAuthencated = _interopRequireDefault(require("../middleware/ensureAuthencated"));
+
+var _UsersController = _interopRequireDefault(require("../controllers/UsersController"));
+
+var _UserAvatarController = _interopRequireDefault(require("../controllers/UserAvatarController"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const usersRouter = (0, _express.Router)();
+const upload = (0, _multer.default)(_upload.default.multer);
+const usersController = new _UsersController.default();
+const userAvatarController = new _UserAvatarController.default();
+usersRouter.post('/', (0, _celebrate.celebrate)({
+  [_celebrate.Segments.BODY]: {
+    name: _celebrate.Joi.string().required(),
+    email: _celebrate.Joi.string().required().email(),
+    password: _celebrate.Joi.string().required()
+  }
+}), usersController.create);
+usersRouter.patch('/avatar', _ensureAuthencated.default, upload.single('avatar'), userAvatarController.update);
+var _default = usersRouter;
+exports.default = _default;

@@ -10,6 +10,7 @@ describe('ShowProfileUser', () => {
         userRepository = new FakeUsersRepository();
         showProfile = new ShowProfileService(userRepository);
     });
+
     it('shoul be able find this user', async () => {
         const findById = jest.spyOn(userRepository, 'findById');
         const user = await userRepository.create({
@@ -22,6 +23,7 @@ describe('ShowProfileUser', () => {
         expect(showUser).toHaveProperty('email');
         expect(findById).toHaveBeenCalledWith(user.id);
     });
+
     it('shoul be able not find this user already', async () => {
         await expect(
             showProfile.execute({ user_id: 'no-existing-id' }),

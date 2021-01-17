@@ -33,7 +33,7 @@ class UsersRepository implements IUserRepository {
 
     public async findAllProvider({
         except_user_id,
-    }: IFindAllProviderDTO): Promise<User[] | undefined> {
+    }: IFindAllProviderDTO): Promise<User[] | null> {
         let users: User[];
         if (except_user_id) {
             users = await this.ormRepository.find({

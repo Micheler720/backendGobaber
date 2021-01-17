@@ -21,6 +21,7 @@ describe('ResetPassword', () => {
             fakeHashProvider,
         );
     });
+
     it('should be able to reset password', async () => {
         const generatHash = jest.spyOn(fakeHashProvider, 'generatHash');
 
@@ -50,6 +51,7 @@ describe('ResetPassword', () => {
             }),
         ).rejects.toBeInstanceOf(AppError);
     });
+
     it('should not be able to reset the password with non-existing user.', async () => {
         const { token } = await fakeUserTokensRepository.generate(
             'non-existent-use',

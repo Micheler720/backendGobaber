@@ -15,6 +15,7 @@ describe('ListProviderDayAvailability', () => {
             fakeUserRepository,
         );
     });
+
     it('should be list to list the day availability from provider.', async () => {
         jest.spyOn(Date, 'now').mockImplementationOnce(() => {
             return new Date(2020, 4, 20, 11).getTime();
@@ -27,14 +28,17 @@ describe('ListProviderDayAvailability', () => {
         await fakeAppointmentRepository.create({
             date: new Date(2020, 4, 20, 8, 0, 0),
             provider_id: user.id,
+            user_id: user.id,
         });
         await fakeAppointmentRepository.create({
             date: new Date(2020, 4, 20, 10, 0, 0),
             provider_id: user.id,
+            user_id: user.id,
         });
         await fakeAppointmentRepository.create({
             date: new Date(2020, 4, 20, 15, 0, 0),
             provider_id: user.id,
+            user_id: user.id,
         });
         const availability = await listProviderDayAvailability.execute({
             day: 20,
